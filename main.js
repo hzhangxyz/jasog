@@ -15,7 +15,7 @@ var get_data = async (n) => {
 }
 
 var _html = async (n) => {
-    var to_insert = await get_data(`html/${n}.html`)
+    var to_insert = await get_data(n)
     var config = JSON.parse(to_insert.match(/^\s*<!--([\s\S]*?)\s*-->/)[1])
     if(!config.hasOwnProperty("layout")){
         return [to_insert,config]
@@ -37,7 +37,7 @@ var html = async (n) => {
 }
 
 var json = async (n,m = window) => {
-    data = JSON.parse(await get_data(`json/${n}.json`))
+    data = JSON.parse(await get_data(n))
     console.log(data)
     for(var i in data){
         m[i] = data[i]
