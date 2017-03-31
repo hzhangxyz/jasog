@@ -6,7 +6,13 @@
 -->
 
 <script>
-var temp_data = await json("data/temp.json")
-for(var i in temp_data)
-write(`Book Name: ${i}, Price: ${temp_data[i]}`)
+(async function(){
+    var temp_data = await json("data/temp.json")
+    document.write(`<table>`)
+    for(var i in temp_data)
+        document.write(`
+        <tr> <th>${i}</th><th> price${temp_data[i]}</th></tr>
+        `)
+    document.write(`</table>`)
+})()
 </script>
