@@ -1,7 +1,5 @@
 var storage = sessionStorage
 
-var write = document.write
-
 var clear_data = async () => {
     storage.clear()
 }
@@ -41,7 +39,6 @@ var html = async (n) => {
 
 var json = async (n,m = window) => {
     data = JSON.parse(await get_data(n))
-    console.log(data)
     for(var i in data){
         m[i] = data[i]
     }
