@@ -29,11 +29,23 @@ var _html = async (n) => {
 }
 
 var html = async (n) => {
-    [doc, ans] = await _html(n)
+    var [doc, ans] = await _html(n)
     for(var i in ans){
         this[i] = ans[i]
     }
-    document.write(doc)
+    var to_print = ""
+    var print = (n)=>{to_print += n}
+    var temp_doc = `?>${doc}<?`
+    var htmls = temp_doc.match(/\?>[\s\S]*?<\?/g)
+    var jss = temp_doc.match(/<\?([\s\S]*?)\?>/g)
+    for(var i=0;i<jss.length;i++){
+        try{print(htmls[i].slice(2,-2))
+        }catch(e){print(`Error: ${e}`)}
+        try{eval(jss[i].slice(2,-2))
+        }catch(e){print(`Error: ${e}`)}
+    }
+    print(htmls[i].slice(2,-2))
+    document.write(to_print)
     return [doc,ans]
 }
 
