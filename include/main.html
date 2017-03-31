@@ -1,7 +1,12 @@
 <!--
 {
-    "layout": "include/default.html"
+    "layout": "include/default.html",
+    "title": "Home Page"
 }
 -->
 
-This is main.html
+<script>
+var temp_data = await json("data/temp.json")
+for(var i in temp_data)
+write(`Book Name: ${i}, Price: ${temp_data[i]}`)
+</script>
