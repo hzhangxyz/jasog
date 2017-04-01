@@ -1,19 +1,3 @@
-var storage = sessionStorage
-
-var clear_data = async () => {
-    storage.clear()
-}
-
-var get_data = async (n) => {
-    if(storage.hasOwnProperty(n)){
-        return storage.getItem(n)
-    }else{
-        var value = await (await fetch(n)).text()
-        storage.setItem(n,value)
-        return value
-    }
-}
-
 var _html = async (n) => {
     var to_insert = await get_data(n)
     var config = JSON.parse(to_insert.match(/^\s*<!--([\s\S]*?)\s*-->/)[1])
@@ -28,7 +12,7 @@ var _html = async (n) => {
     }
 }
 
-var async_eval_for_print = async (code,data) =>{
+var _async_eval_for_print = async (code,data) =>{
     print = data[0]
     var to_eval = `(async (data)=>{
         print = data[0]
@@ -37,10 +21,31 @@ var async_eval_for_print = async (code,data) =>{
     await eval(to_eval)
 }
 
-var html = async (n) => {
+var storage = sessionStorage
+
+var clear_data = async () => {
+    storage.clear()
+}
+
+var clear_body = async () =>{
+    try{document.body.innerText = ""
+    }catch(e){}
+}
+
+var get_data = async (n) => {
+    if(storage.hasOwnProperty(n)){
+        return storage.getItem(n)
+    }else{
+        var value = await (await fetch(n)).text()
+        storage.setItem(n,value)
+        return value
+    }
+}
+
+var html = async (n,m = window) => {
     var [doc, ans] = await _html(n)
     for(var i in ans){
-        this[i] = ans[i]
+        m[i] = ans[i]
     }
     var print = new Proxy(function(){},{
         apply: function(target, thisArg, argumentsList){
@@ -54,12 +59,11 @@ var html = async (n) => {
     for(var i=0;i<jss.length;i++){
         try{print(htmls[i].slice(2,-2))
         }catch(e){print(`Error: ${e}`)}
-        try{await async_eval_for_print(jss[i].slice(2,-2),[print])
+        try{await _async_eval_for_print(jss[i].slice(2,-2),[print])
         }catch(e){print(`Error: ${e}`)}
     }
     print(htmls[i].slice(2,-2))
-    document.write(print.data)
-    return [doc,ans]
+    return [print.data,ans]
 }
 
 var json = async (n,m = window) => {
@@ -68,4 +72,10 @@ var json = async (n,m = window) => {
         m[i] = data[i]
     }
     return data
+}
+
+var link = async(n) => {
+    var data = await html(n)
+    clear_body()
+    document.write(data[0])
 }
