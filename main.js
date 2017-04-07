@@ -1,6 +1,7 @@
-var _html = async (n) => {
+var _html = async function(n) {
     var to_insert = await get_data(n)
-    var config = JSON.parse(to_insert.match(/^\s*<!--([\s\S]*?)\s*-->/)[1])
+    try{var config = JSON.parse(to_insert.match(/^\s*<!--([\s\S]*?)\s*-->/)[1])
+    }catch(e){var config = {}}
     if(!config.hasOwnProperty("layout")){
         return [to_insert,config]
     }else{
@@ -12,7 +13,7 @@ var _html = async (n) => {
     }
 }
 
-var _async_eval_for_print = async (code,data) =>{
+var _async_eval_for_print = async function(code,data){
     print = data[0]
     var to_eval = `(async (data)=>{
         print = data[0]
@@ -23,16 +24,16 @@ var _async_eval_for_print = async (code,data) =>{
 
 var storage = sessionStorage
 
-var clear_data = async () => {
+var clear_data = async function() {
     storage.clear()
 }
 
-var clear_body = async () =>{
+var clear_body = async function() {
     try{document.body.innerText = ""
     }catch(e){}
 }
 
-var get_data = async (n) => {
+var get_data = async function(n) {
     if(storage.hasOwnProperty(n)){
         return storage.getItem(n)
     }else{
@@ -42,7 +43,7 @@ var get_data = async (n) => {
     }
 }
 
-var html = async (n,m = window) => {
+var html = async function(n,m = window){
     var [doc, ans] = await _html(n)
     for(var i in ans){
         m[i] = ans[i]
@@ -56,7 +57,8 @@ var html = async (n,m = window) => {
     var temp_doc = `?>${doc}<?`
     var htmls = temp_doc.match(/\?>[\s\S]*?<\?/g)
     var jss = temp_doc.match(/<\?([\s\S]*?)\?>/g)
-    for(var i=0;i<jss.length;i++){
+    var length = jss?jss.length:0
+    for(var i=0;i<length;i++){
         try{print(htmls[i].slice(2,-2))
         }catch(e){print(`Error: ${e}`)}
         try{await _async_eval_for_print(jss[i].slice(2,-2),[print])
@@ -66,7 +68,7 @@ var html = async (n,m = window) => {
     return [print.data,ans]
 }
 
-var json = async (n,m = window) => {
+var json = async function(n,m = window) {
     data = JSON.parse(await get_data(n))
     for(var i in data){
         m[i] = data[i]
@@ -74,7 +76,12 @@ var json = async (n,m = window) => {
     return data
 }
 
-var link = async(n) => {
+var include = async function(n, print) {
+    var data = await html(n)
+    print(data[0])
+}
+
+var link = async function(n) {
     var data = await html(n)
     clear_body()
     document.write(data[0])
