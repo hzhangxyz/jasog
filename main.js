@@ -33,40 +33,51 @@ var toSend = function(temp){
     this.eval=async function(temp){
         await eval(`(async function(){${temp}})`).call(this)
     }
-    this.include=async function(temp){
-        var doc = (await asyncalize(fs.readFile)(temp))[1].toString()
-            await render.call(this,doc)
+   this.add_doc=async function(doc){
+        var temp_doc = `?>${doc}<?`
+        var htmls=temp_doc.match(/\?>[\s\S]*?<\?/g) || []
+        var jss=temp_doc.match(/<\?([\s\S]*?)\?>/g) || []
+        this.contents.push({htmls,jss})
+        return this.contents.length-1
     }
     this.content=async function(temp){
+        this.point.push(this.point[0])
+        this.point.shift()
+    }
+    this.include=async function(temp){
+        var doc = (await asyncalize(fs.readFile)(temp))[1].toString()
+        this.point.unshift(await this.add_doc(doc))
     }
     this.from=async function(temp){
-        
+        var doc = (await asyncalize(fs.readFile)(temp))[1].toString()
+        this.point.unshift(await this.add_doc(doc))
     }
-    this.callback=[]
+    this.contents=[]
+    this.point=[]
+    this.render = async function(){
+        var now
+        var length
+        while(this.point.length){
+            now = this.point[0];
+            if(this.contents[now].htmls.length)
+                try{await this.write(this.contents[now].htmls.shift().slice(2,-2))
+                }catch(e){await this.write(`Error: ${e}`)}
+            if(this.contents[now].jss.length)
+                try{await this.eval(this.contents[now].jss.shift().slice(2,-2))
+                }catch(e){await this.write(`Error: ${e}`)}
+            if(this.contents[now].htmls.length==0 && this.contents[now].jss.length==0)
+                this.point.shift()
+        }
+    }
 }
  
-
 main_router.use(/.*\.jsg/,async function(req,res,next){
     doc = (await asyncalize(fs.readFile)(req.baseUrl.substr(1)))[1].toString()
     var to_send=new toSend()
-    res.send(await render.call(to_send,doc))
+    to_send.point.unshift(await to_send.add_doc(doc))
+    await to_send.render()
+    res.send(to_send.data)
 })
-
-var render = async function(doc){
-    var temp_doc = `?>${doc}<?`
-    var htmls = temp_doc.match(/\?>[\s\S]*?<\?/g)
-    var jss = temp_doc.match(/<\?([\s\S]*?)\?>/g)
-    var length = jss?jss.length:0
-    for(var i=0;i<length;i++){
-        try{await this.write(htmls[i].slice(2,-2))
-        }catch(e){await this.write(`Error: ${e}`)}
-        try{await this.eval(jss[i].slice(2,-2))
-        }catch(e){await this.write(`Error: ${e}`)}
-    }
-    await this.write(htmls[i].slice(2,-2))
-    if(this.callback.length)await this.callback.pop()()
-    return this.data
-}
 
 main_router.use(static_router)
 
