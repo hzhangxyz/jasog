@@ -17,7 +17,7 @@ main_router.use(/.*\.jsg/,async function(req,res,next){
 
 main_router.use(static_router)
 
-var root_router = 0?static_router:main_router
+var root_router = 1?static_router:main_router
 
 app.use("/",root_router)
 

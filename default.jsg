@@ -1,6 +1,0 @@
-<html>
-<body>
-<? await this.content() ?>
-<? await this.include("tail.jsg") ?>
-</body>
-</html>

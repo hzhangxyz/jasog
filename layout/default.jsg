@@ -1,10 +1,5 @@
 <?
-
-this.site={
-    "email":"zh970205@outlook.com",
-    "author":"Hao Zhang"
-}
-
+await this.include("etc/site.jsg")
 
 ?>
 
