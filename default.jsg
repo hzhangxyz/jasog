@@ -1,0 +1,6 @@
+<html>
+<body>
+<? await content() ?>
+<? await include("tail.jsg") ?>
+</body>
+</html>
