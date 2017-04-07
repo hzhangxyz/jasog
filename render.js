@@ -18,7 +18,14 @@ var Render = function(temp){
 
     if(typeof module == "undefined"){
         this.getfile = async function(temp){
-            return await ((await fetch(temp)).text())
+            var storage = sessionStorage
+            if(storage.hasOwnProperty(temp)){
+                return storage.getItem(temp)
+            }else{
+                var value = await (await fetch(temp)).text();
+                storage.setItem(temp,value);
+                return value
+            }
         }
     }else{
         this.getfile = async function(temp){
