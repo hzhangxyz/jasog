@@ -2,7 +2,7 @@
 
   <div class="wrapper">
 
-      <a class="site-title" href="."><? this.write(this.title) ?></a>
+      <a class="site-title" href="."><? this.write(this.site.title) ?></a>
 
     <!--<nav class="site-nav">
       {% for link in site.data.navigation.main %}

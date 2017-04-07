@@ -1,0 +1,9 @@
+<? 
+this.post={
+    "title" : "test",
+    "author" : "Hao Zhang",
+}
+await this.from("layout/post.jsg")
+?>
+
+this is just a test
