@@ -1,0 +1,11 @@
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+&copy; <a href="mailto:<? this.write(this.site.email) ?> " ><? this.write(this.site.author) ?></a> - Powered by <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/yous/whiteglass">whiteglass</a> - Subscribe via <a href="{{ feed_path | absolute_url }}">RSS</a>
+    </p>
+
+  </div>
+
+</footer>

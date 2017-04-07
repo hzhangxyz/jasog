@@ -1,0 +1,31 @@
+<?
+
+this.site={
+    "email":"zh970205@outlook.com",
+    "author":"Hao Zhang"
+}
+
+
+?>
+
+<html>
+
+<? await this.include("include/head.jsg") ?>
+
+
+<body>
+
+    <? await this.include("include/header.jsg") ?>
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+      <? this.content() ?>
+      </div>
+    </main>
+
+    <? await this.include("include/footer.jsg") ?>
+
+
+</body>
+
+</html>

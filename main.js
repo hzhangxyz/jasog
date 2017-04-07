@@ -11,12 +11,13 @@ main_router.use(/.*\.jsg/,async function(req,res,next){
     var to_send=new toSend()
     to_send.point.unshift(await to_send.add_doc(await to_send.getfile(req.baseUrl.substr(1))))
     await to_send.render()
+    res.type('html')
     res.send(to_send.data)
 })
 
 main_router.use(static_router)
 
-var root_router = 1?static_router:main_router
+var root_router = 0?static_router:main_router
 
 app.use("/",root_router)
 
