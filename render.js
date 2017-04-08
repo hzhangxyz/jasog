@@ -51,20 +51,20 @@ var Render = function(temp){
     }
 
     this.content = async function(temp){
-        var a = this.point.pop()
-        var b = this.point.pop()
-        this.point.unshift(a)
-        this.point.unshift(b)
+        var temp = this.point
+        this.point = temp.slice(1,this.now_rank+1).concat([temp[0]]).concat(temp.slice(this.now_rank+1))
     }
 
     this.include = async function(temp){
         var doc = await this.getfile(temp)
         this.point.unshift(await this.add_doc(doc))
+        this.contents[this.point[0]].rank = 0
     }
 
     this.from= async function(temp){
         var doc = await this.getfile(temp)
         this.point.unshift(await this.add_doc(doc))
+        this.contents[this.point[0]].rank = this.now_rank + 1
     }
 
     this.render = async function(){
@@ -72,6 +72,7 @@ var Render = function(temp){
         var length
         while(this.point.length){
             now = this.point[0];
+            this.now_rank = this.contents[now].rank
             if(this.contents[now].htmls.length)
                 try{await this.write(this.contents[now].htmls.shift().slice(2,-2))
                 }catch(e){await this.write(`Error: ${e}`)}
@@ -92,6 +93,7 @@ if (typeof module == "undefined"){
                 await render.getfile(temp)
             )
         )
+        render.contents[render.point[0]].rank = 0
         await render.render()
         document.body.innerText=""
         document.write(render.data)

@@ -8,8 +8,11 @@ this.title = "Hao Zhang's Home"
 
   <ul class="post-list">
 
-    <? for(var post in this.posts){
-this.write(`
+    <? 
+    this.temp_from = this.from
+    this.from = async(n)=>{}
+    for(var post in this.posts){
+await this.write(`
       <li>
         <header class="post-header">
           <h1 class="post-title">
@@ -25,15 +28,13 @@ this.write(`
 
         <div class="post-content">
 `)
-          var temp = this.from
-          this.from = async(n)=>{};
           await this.include(this.posts[post])
-          this.from = temp;
-this.write(`
+await this.write(`
         </div>
       </li>
 `)
     } ?>
+    <? this.from = this.temp_from ?>
   </ul>
 
   <!--{% include pagination.html %} -->
