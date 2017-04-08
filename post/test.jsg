@@ -1,9 +1,11 @@
 <? 
 this.post={
-    "title" : "test",
-    "author" : "Hao Zhang",
+    "title" : "测试页面的标题",
+    "author" : "作者",
+    "date" : "01-01-2017"
 }
 await this.from("layout/post.jsg")
 ?>
 
-this is just a test
+<h2>this is just a test</h2>
+测试

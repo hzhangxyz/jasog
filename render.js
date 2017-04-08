@@ -51,8 +51,10 @@ var Render = function(temp){
     }
 
     this.content = async function(temp){
-        this.point.push(this.point[0])
-        this.point.shift()
+        var a = this.point.pop()
+        var b = this.point.pop()
+        this.point.unshift(a)
+        this.point.unshift(b)
     }
 
     this.include = async function(temp){

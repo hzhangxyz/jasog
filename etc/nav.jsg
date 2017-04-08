@@ -1,0 +1,6 @@
+<?
+this.nav=[
+    "page/about.jsg",
+    "page/main.jsg",
+]
+?>

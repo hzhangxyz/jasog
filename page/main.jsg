@@ -7,9 +7,9 @@ this.title = "Hao Zhang's Home"
 
 
   <ul class="post-list">
-    <!--{% for post in paginator.posts %}
-
-      <li{% if lang != empty %} lang="{{ lang }}"{% endif %}>
+    <? for(var post in this.posts){
+this.write(`
+      <li>
         <header class="post-header">
           <h1 class="post-title">
             <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
@@ -19,16 +19,16 @@ this.title = "Hao Zhang's Home"
         </header>
 
         <div class="post-content">
-          {{ post.excerpt }}
+`)
+          var temp = this.from
+          this.from = async(){}
+          this.include(this.posts[post])
+          this.from = temp;
+this.write(`
         </div>
-        {% if post.content contains site.excerpt_separator %}
-          <p class="post-continue">
-            <a href="{{ post.url | relative_url }}">Read on &rarr;</a>
-          </p>
-        {% endif %}
       </li>
-    {% endfor %}
-    -->
+`)
+    }?>
   </ul>
 
   <!--{% include pagination.html %} -->

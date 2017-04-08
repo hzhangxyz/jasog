@@ -4,16 +4,12 @@
 
       <a class="site-title" href="/"><? this.write(this.site.title) ?></a>
 
-    <!--<nav class="site-nav">
-      {% for link in site.data.navigation.main %}
-        {% if link.url contains "http" %}
-          {% assign url = link.url %}
-        {% else %}
-          {% assign url = link.url | relative_url %}
-        {% endif %}
-        <a class="page-link" href="{{ url }}">{{ link.title }}</a>
-      {% endfor %}
-    </nav>-->
+    <nav class="site-nav">
+      <? for(var page in this.nav){
+        this.write(`<a class="page-link" href="#${this.nav[page]}">${this.nav[page]}</a>`)
+      }
+        ?>
+    </nav>
 
   </div>
 

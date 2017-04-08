@@ -1,5 +1,7 @@
 <?
 await this.include("etc/site.jsg")
+await this.include("etc/nav.jsg")
+await this.include("etc/post.jsg")
 
 ?>
 

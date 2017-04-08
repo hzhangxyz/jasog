@@ -1,0 +1,5 @@
+<?
+this.posts = [
+    "post/test.jsg",
+]
+?>
