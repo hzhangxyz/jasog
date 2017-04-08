@@ -7,28 +7,33 @@ this.title = "Hao Zhang's Home"
 
 
   <ul class="post-list">
+
     <? for(var post in this.posts){
 this.write(`
       <li>
         <header class="post-header">
           <h1 class="post-title">
-            <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}{% if post.external-url %} &rarr;{% endif %}</a>
+            <a class="post-link" href="Here is url">
+              Here is Title
+            </a>
           </h1>
 
-          <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}{% if post.categories != empty %} • {% include category_links.html categories=post.categories %}{% endif %}</p>
+          <p class="post-meta">
+            Here is Date • Here is Categories
+          </p>
         </header>
 
         <div class="post-content">
 `)
           var temp = this.from
-          this.from = async(){}
-          this.include(this.posts[post])
+          this.from = async(n)=>{};
+          await this.include(this.posts[post])
           this.from = temp;
 this.write(`
         </div>
       </li>
 `)
-    }?>
+    } ?>
   </ul>
 
   <!--{% include pagination.html %} -->
