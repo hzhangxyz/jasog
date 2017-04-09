@@ -1,5 +1,6 @@
 <?
 this.posts = [
     "post/test.jsg",
+    "post/test2.jsg",
 ]
 ?>
